@@ -1,23 +1,23 @@
 module "kafka-cluster-security-group" {
   source = "../modules/kafka-cluster-security-group/"
 
-  environment = "${var.environment}"
-  vpc_name    = "${var.vpc_name}"
+  environment = var.environment
+  vpc_name    = var.vpc_name
 }
 
 module "zookeeper" {
   source = "../modules/zookeeper/"
 
-  environment       = "${var.environment}"
-  vpc_name          = "${var.vpc_name}"
-  availability_zone = "eu-west-1a"
+  environment       = var.environment
+  vpc_name          = var.vpc_name
+  availability_zone = "us-east-1"
   component_name    = "test"
   service           = "kafka"
 
-  image_filter    = "my-image-name-*"
-  instance_type   = "t2.small"
-  instance_count  = 3
-  key_name        = "${var.master_key}"
+  image_filter   = "my-image-name-*"
+  instance_type  = "t2.small"
+  instance_count = 3
+  key_name       = var.master_key
 }
 
 # IPs allowed to reach Kafka
@@ -31,17 +31,17 @@ locals {
 module "kafka" {
   source = "../modules/kafka/"
 
-  environment       = "${var.environment}"
-  vpc_name          = "${var.vpc_name}"
-  availability_zone = "eu-west-1a"
-  zookeeper_quorum  = "${module.zookeeper.zookeeper_quorum}"
+  environment       = var.environment
+  vpc_name          = var.vpc_name
+  availability_zone = "us-east-1"
+  zookeeper_quorum  = module.zookeeper.zookeeper_quorum
   component_name    = "test"
 
-  image_filter    = "my-image-name-*"
-  instance_type   = "t2.medium"
-  instance_count  = 3
-  key_name        = "${var.master_key}"
-  external_ips    = "${local.allowed_ips}"
-  port_plain      = "9094"
-  port_ssl        = "9092"
+  image_filter   = "my-image-name-*"
+  instance_type  = "t2.medium"
+  instance_count = 3
+  key_name       = var.master_key
+  external_ips   = local.allowed_ips
+  port_plain     = "9094"
+  port_ssl       = "9092"
 }
