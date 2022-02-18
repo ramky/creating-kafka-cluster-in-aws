@@ -1,12 +1,12 @@
 module "kafka-cluster-security-group" {
-  source = "../modules/kafka-cluster-security-group/"
+  source = "../../modules/kafka-cluster-security-group/"
 
   environment = var.environment
   vpc_name    = var.vpc_name
 }
 
 module "zookeeper" {
-  source = "../modules/zookeeper/"
+  source = "../../modules/zookeeper/"
 
   environment       = var.environment
   vpc_name          = var.vpc_name
@@ -29,7 +29,7 @@ locals {
 }
 
 module "kafka" {
-  source = "../modules/kafka/"
+  source = "../../modules/kafka/"
 
   environment       = var.environment
   vpc_name          = var.vpc_name
